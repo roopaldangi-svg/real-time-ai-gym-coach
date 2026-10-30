@@ -18,3 +18,7 @@ Main App/data.db
 
 # Streamlit Secrets
 secrets.toml
+.env
+**/.env
+.streamlit/secrets.toml
+**/.streamlit/secrets.toml

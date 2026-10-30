@@ -176,14 +176,40 @@ def main():
 
     st.title("AI Real-time GYM Coach")
     st.markdown("#### Real-time pose detection with proactive AI voice coaching")
- 
-    if st.session_state.get("audio_to_play"):
-        audio_id = st.session_state.get("audio_id", "default")
-        autoplay_audio(st.session_state.audio_to_play, audio_id)
 
+    
     if st.session_state.get("coach_feedback"):
-        st.markdown("")
-        st.success(f"🤖 **Coach:** {st.session_state.coach_feedback}")
+        feedback = st.session_state.coach_feedback
+
+        st.success(f"🤖 **Coach:** {feedback}")
+
+        st.components.v1.html(
+            f"""
+            <script>
+            if (window.lastMessage !== {feedback!r}) {{
+                window.lastMessage = {feedback!r};
+
+                window.speechSynthesis.cancel();
+
+                let msg = new SpeechSynthesisUtterance(window.lastMessage);
+                msg.rate = 1;
+                msg.pitch = 1;
+                msg.volume = 1;
+
+                setTimeout(() => {{
+                    window.speechSynthesis.speak(msg);
+                }}, 100);
+            }}
+            </script>
+            """,
+            height=0,
+        )
+
+        # Clear after speaking
+        st.session_state.coach_feedback = None
+
+
+    
 
     if not workout_started:
         st.markdown(
@@ -220,11 +246,7 @@ def main():
         )
 
         sync_metrics_update(context)
-
-        if context.state.playing:
-            time.sleep(0.25)
-            st.rerun()
-
+        
         inject_webrtc_styles()
 
     st.divider()

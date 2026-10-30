@@ -214,11 +214,15 @@ class VideoProcessorClass(VideoProcessorBase):
             if detector:
                 metrics = detector.process(landmarks)
 
+                print("VIDEO PROCESSOR METRICS:", metrics)
+
                 metrics["pose_detected"] = True
 
                 self._draw_overlays(image, metrics, ex_type)
-
+       
                 self.set_latest_metrics(metrics)
+
+                print("SAVED METRICS:", self.get_latest_metrics())
         else:
             self._draw_no_pose_warnings(image)
             

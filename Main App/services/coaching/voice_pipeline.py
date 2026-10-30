@@ -78,7 +78,17 @@ class VoicePipeline:
                 return None
             
         text = self.llm.give_feedback(event, issue)
-        voice = self.tts.speak(text)
+
+        print("EVENT:", event)
+        print("ISSUE:", issue)
+        print("AI RESPONSE:", text)
+
+        voice = None
+
+        if self.tts:
+            voice = self.tts.speak(text)
+
+        print("VOICE CREATED:", voice is not None)
 
         self.last_spoken_at = now
         st.session_state.audio_id = now
@@ -87,15 +97,9 @@ class VoicePipeline:
     
 
 import base64
+import streamlit as st
 
 def autoplay_audio(audio_bytes, audio_id="default"):
-    if not audio_bytes:
-        return
-    
-    b64 = base64.b64encode(audio_bytes).decode()
-    md = f"""
-        <audio autoplay id="audio_{audio_id}" class="stAudio">
-            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
-        </audio>
-        """
-    st.markdown(md, unsafe_allow_html=True)
+    pass
+
+

@@ -1,3 +1,4 @@
+
 import streamlit as st
 import time
 from services.config.workout_config import METRICS_FIELDS
@@ -20,6 +21,10 @@ def sync_metrics_update(context):
     
     processor.set_exercise(exercise)
     latest_metrics = processor.get_latest_metrics()
+
+    print("=" * 50)
+    print("LATEST METRICS:", latest_metrics)
+    print("=" * 50)
 
     if not latest_metrics:
         return

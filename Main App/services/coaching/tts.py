@@ -7,8 +7,8 @@ class TextToSpeech:
         cleaned = (text or "").strip()
 
         if not cleaned:
-            return
-        
+            return None
+
         buffer = BytesIO()
 
         gTTS(text=cleaned, lang=lang).write_to_fp(buffer)
@@ -16,4 +16,3 @@ class TextToSpeech:
         buffer.seek(0)
 
         return buffer.read()
-    
